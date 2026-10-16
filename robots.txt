@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://phenix-groups-of-companies.com/sitemap.xml

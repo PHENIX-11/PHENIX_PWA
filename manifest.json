@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "PHENIX GROUP'S OF COMPANIES",
+  "short_name": "PHENIX",
+  "description": "PHENIX GROUP'S OF COMPANIES \u2014 From vision to revolution.",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080b09",
+  "theme_color": "#080b09",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/phenix-pwa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/phenix-pwa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
