@@ -2005,5 +2005,68 @@ body :is(button,a,input,select,textarea,[tabindex]):focus-visible{outline-color:
 })();
 </script>
 
+
+<style id="phx-cache-reload-prompt-style">
+#phx-cache-reload-prompt{position:fixed;z-index:10050;left:50%;bottom:28px;transform:translate(-50%,18px);width:min(470px,calc(100vw - 28px));padding:20px 20px 18px;border:1px solid rgba(89,235,255,.42);border-radius:20px;background:linear-gradient(145deg,rgba(8,17,31,.97),rgba(17,10,34,.97));box-shadow:0 22px 80px rgba(0,0,0,.6),0 0 35px rgba(63,234,255,.12);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);color:#f5f8ff;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s ease,transform .3s ease,visibility .3s}
+#phx-cache-reload-prompt.phx-show{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+#phx-cache-reload-prompt .phx-cache-eyebrow{font:700 10px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.22em;color:#64f3ff;text-transform:uppercase;margin:0 0 8px}
+#phx-cache-reload-prompt h2{font:800 20px/1.2 system-ui,sans-serif;letter-spacing:.01em;margin:0 0 8px;color:#fff}
+#phx-cache-reload-prompt p{font:14px/1.55 system-ui,sans-serif;margin:0 0 16px;color:#c2cee3}
+#phx-cache-reload-prompt button{display:block;width:100%;border:1px solid rgba(100,243,255,.65);border-radius:12px;padding:12px 16px;background:linear-gradient(100deg,#21d4df,#7b65ff 58%,#e66acb);color:#07101d;font:800 13px/1.2 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 26px rgba(63,234,255,.15)}
+#phx-cache-reload-prompt button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){#phx-cache-reload-prompt{transition:none}}
+</style>
+<div id="phx-cache-reload-prompt" role="status" aria-live="polite" aria-labelledby="phx-cache-reload-title">
+  <div class="phx-cache-eyebrow">PHENIX CORE · CACHE READY</div>
+  <h2 id="phx-cache-reload-title">Ready for a smoother launch?</h2>
+  <p>PHENIX has prepared a cached copy of the main page. Reload once to open through the cached experience.</p>
+  <button id="phx-cache-reload-now" type="button">Reload now ↻</button>
+</div>
+<script id="phx-cache-reload-prompt-logic">
+/* Show once after 30 seconds, only when the service worker is active and the main page is cached. */
+(function(){
+  const PROMPT_KEY='phx-cache-reload-prompt-used-v1';
+  const WAIT_MS=30000;
+  const prompt=document.getElementById('phx-cache-reload-prompt');
+  const button=document.getElementById('phx-cache-reload-now');
+  if(!prompt||!button||!('serviceWorker' in navigator))return;
+  try{if(sessionStorage.getItem(PROMPT_KEY)==='1')return;}catch(e){}
+  let shown=false, checks=0;
+  const pageUrl=new URL('index.html',document.baseURI).href;
+  async function cacheReady(){
+    try{
+      const reg=await navigator.serviceWorker.getRegistration('./');
+      if(!reg||!reg.active)return false;
+      if(!('caches' in window))return false;
+      const hit=await caches.match(pageUrl);
+      return !!hit;
+    }catch(e){return false;}
+  }
+  async function revealWhenReady(){
+    if(shown)return;
+    // Wait for the 30-second usage threshold, then wait briefly for real cache readiness.
+    while(checks<30){
+      if(await cacheReady()){
+        shown=true;
+        prompt.classList.add('phx-show');
+        return;
+      }
+      checks++;
+      await new Promise(resolve=>setTimeout(resolve,1000));
+    }
+    // If the browser couldn't confirm the cache, do not show a misleading prompt.
+  }
+  setTimeout(revealWhenReady,WAIT_MS);
+  button.addEventListener('click',function(){
+    if(button.disabled)return;
+    button.disabled=true;
+    button.textContent='RELOADING PHENIX…';
+    try{sessionStorage.setItem(PROMPT_KEY,'1');}catch(e){}
+    // A normal navigation reload lets the active service worker serve its cached page.
+    window.location.reload();
+  });
+})();
+</script>
+
 </body>
 </html>

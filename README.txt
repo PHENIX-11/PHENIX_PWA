@@ -1,18 +1,14 @@
-PHENIX GROUP'S OF COMPANIES — PWA PACKAGE
+PHENIX GROUP’S OF COMPANIES — CACHE RELOAD PROMPT UPDATE
 
-Files to upload to the ROOT of a NEW GitHub repository:
-- index.html
-- service-worker.js
-- manifest.json
-- assets/ (entire folder)
-- robots.txt
-- sitemap.xml
-- README.md / README.txt
+Upload the contents of this ZIP to the ROOT of the existing PHENIX_PWA GitHub repository, replacing files with the same names. Keep the assets folder at the root.
 
-GitHub Pages setup: Settings > Pages > Deploy from a branch > main > /(root).
+Updated files: index.html and service-worker.js. Other files and assets are included unchanged.
 
-Caching: the service worker automatically caches the app shell and selected same-origin assets on first visit, then caches other same-origin GET resources as they are requested. It can fall back to cached index.html when offline. Browser storage can be evicted, and first visit still requires downloading resources.
+Behavior:
+- The popup waits at least 30 seconds after the page starts running.
+- It appears only after an active service worker and cached index.html are confirmed.
+- It has one button: “Reload now”. The user chooses whether to reload; the page never reloads automatically.
+- Clicking it reloads once and suppresses another prompt for the rest of that browser tab session, avoiding a reload loop.
+- Navigation is cache-first when a cached page exists, while a fresh copy is updated in the background.
 
-Install: an Install PHENIX button is included. Supported browsers show their native confirmation UI after the visitor clicks it. Websites cannot silently install themselves without the visitor's choice. Some browsers (including iOS browsers) require Add to Home Screen from the browser's Share/menu UI.
-
-Important: this PWA improves repeat loading/offline resilience; it does not guarantee fixing a slow click caused by JavaScript, animations, or external embeds.
+Notes: First-visit performance still depends on connection speed and downloading the large HTML document. Browser storage can be cleared/evicted, and cache readiness cannot be guaranteed on every device.
