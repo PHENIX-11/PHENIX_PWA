@@ -1966,12 +1966,8 @@ body :is(button,a,input,select,textarea,[tabindex]):focus-visible{outline-color:
  apply();
 })();
 </script>
-<style id="phenix-pwa-install-style">
-#phenixPwaInstall{position:fixed;right:18px;bottom:calc(112px + env(safe-area-inset-bottom));z-index:10050;border:1px solid rgba(225,190,103,.9);border-radius:999px;padding:12px 17px;background:linear-gradient(135deg,#102f26,#080b09);color:#f5e8bf;font:700 12px/1.2 system-ui,sans-serif;letter-spacing:.08em;box-shadow:0 8px 28px rgba(0,0,0,.35);cursor:pointer;backdrop-filter:blur(12px)}
-#phenixPwaInstall:focus-visible{outline:3px solid #80eee8;outline-offset:3px}
-@media(max-width:600px){#phenixPwaInstall{right:12px;bottom:calc(105px + env(safe-area-inset-bottom));padding:11px 13px;font-size:11px}}
-</style>
-<button id="phenixPwaInstall" type="button" aria-label="Install PHENIX on this device">✦ INSTALL PHENIX</button>
+
+
 <script id="phenix-pwa-setup">
 (()=>{
   if ('serviceWorker' in navigator) {
@@ -1981,27 +1977,6 @@ body :is(button,a,input,select,textarea,[tabindex]):focus-visible{outline-color:
         .catch(error => console.error('PHENIX offline cache could not start', error));
     }, {once:true});
   }
-  const button=document.getElementById('phenixPwaInstall');
-  if(!button) return;
-  let promptEvent=null;
-  const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
-  if(isStandalone()) button.hidden=true;
-  window.addEventListener('beforeinstallprompt', event=>{
-    event.preventDefault(); promptEvent=event; button.hidden=false;
-  });
-  window.addEventListener('appinstalled',()=>{promptEvent=null;button.hidden=true;});
-  button.addEventListener('click',async()=>{
-    if(promptEvent){
-      promptEvent.prompt();
-      await promptEvent.userChoice;
-      promptEvent=null;
-      return;
-    }
-    if(isStandalone()){button.hidden=true;return;}
-    const ua=navigator.userAgent;
-    if(/iPhone|iPad|iPod/i.test(ua)) alert('To install PHENIX on iPhone or iPad: open this website in Safari, tap Share, then choose Add to Home Screen.');
-    else alert('If your browser supports installation, use its Install app option in the browser menu. The first visit can cache PHENIX resources automatically; installation itself always requires your choice.');
-  });
 })();
 </script>
 
